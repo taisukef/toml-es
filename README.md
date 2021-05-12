@@ -55,6 +55,10 @@ const stringData = TOML.stringify({
 });
 ```
 
+## Todo
+
+[Issues](https://github.com/alexbeletsky/toml-js/issues)
+
 ## Contributing
 
 You are very welcome. Please fork, update [test](/test/), apply fix, build and
