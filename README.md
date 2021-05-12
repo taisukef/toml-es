@@ -63,7 +63,7 @@ const stringData = TOML.stringify({
 ## Contributing
 
 You are very welcome.  
-Please comment on [Issues](/issues).  
+Please comment on [Issues](https://github.com/taisukef/toml-es/issues).  
 Please fork, update [test](/test/), apply fix, build and submit the pull request.  
 
 ## Supported version
