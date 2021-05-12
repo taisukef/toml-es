@@ -35,7 +35,7 @@ const stringData = TOML.stringify({
 
 ## Running on Deno
 
-```
+```js
 import { TOML } from "https://taisukef.github.io/toml-es/TOML.js";
 ```
 
