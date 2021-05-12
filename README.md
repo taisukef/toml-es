@@ -57,7 +57,8 @@ const stringData = TOML.stringify({
 
 ## Todo
 
-[Issues](https://github.com/alexbeletsky/toml-js/issues)
+* [Issues](https://github.com/alexbeletsky/toml-js/issues)
+* Support [TOML v1.0.0](https://toml.io/en/v1.0.0)
 
 ## Contributing
 
