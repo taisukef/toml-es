@@ -62,8 +62,9 @@ const stringData = TOML.stringify({
 
 ## Contributing
 
-You are very welcome. Please fork, update [test](/test/), apply fix, build and
-submit the pull request.
+You are very welcome.  
+Please comment on [Issues](issues).  
+Please fork, update [test](/test/), apply fix, build and submit the pull request.  
 
 ## Supported version
 
