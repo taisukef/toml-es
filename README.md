@@ -1,4 +1,4 @@
-# Toml-es
+# toml-es
 
 Very slim, very fast, no dependencies, [TOML](https://github.com/mojombo/toml)
 parser implementation. Works both browser and Deno.\
