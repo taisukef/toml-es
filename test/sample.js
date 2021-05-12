@@ -1,4 +1,4 @@
-import { TOML } from "./TOML.js";
+import { TOML } from "../TOML.js";
 
 const a = { name: "joe", age: 20 };
 const s = TOML.dump(a);

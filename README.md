@@ -1,6 +1,7 @@
-# Toml-js [![Build Status](https://secure.travis-ci.org/alexanderbeletsky/toml-js.png?branch=master)](http://travis-ci.org/alexanderbeletsky/toml-js)
+# Toml-es
 
-Very slim, very fast, no dependencies, [TOML](https://github.com/mojombo/toml) parser implementation. Works both browser (plain and AMD) and node.js.
+Very slim, very fast, no dependencies, [TOML](https://github.com/mojombo/toml) parser implementation. Works both browser and Deno.  
+forked from [toml-js](https://github.com/alexbeletsky/toml-js)  
 
 ## Why?
 
@@ -8,71 +9,49 @@ Very slim, very fast, no dependencies, [TOML](https://github.com/mojombo/toml) p
 
 ## Running on browser
 
-Install bower component,
-
-```
-    bower install toml-js
-```
-
-Add reference,
-
 ```html
-    <script type="text/javascript" src="components/toml-js/toml.js"></script>
-```
-
-or AMD,
-
-```html
-    define(['libs/toml'], function (toml) {
-
-    });
+<script type="module">
+import { TOML } from "https://taisukef.github.io/toml-es/TOML.js";
+</script>
 ```
 
 Run parser,
 
 ```js
-    $.get('/config/settings.toml', function (data) {
-        var config = toml.parse(data);
-        console.log(config);
-    });
+const text = await (await fetch('/config/settings.toml')).text();
+const config = TOML.parse(text);
+console.log(config);
 ```
 
 Run dumper,
 
 ```js
-    var stringData = toml.dump({owner: {name: "Tom Preston-Werner", organization: "GitHub"}});
+const stringData = TOML.stringify({owner: {name: "Tom Preston-Werner", organization: "GitHub"}});
 ```
 
-## Running on node
-
-Install npm package
+## Running on Deno
 
 ```
-    npm install toml-js
+import { TOML } from "https://taisukef.github.io/toml-es/TOML.js";
 ```
 
 Run parser,
 
 ```js
-    var fs = require('fs');
-    var toml = require('toml-js');
-
-    fs.readFile('example.toml', function (err, data) {
-        var parsed = toml.parse(data);
-        console.log(parsed);
-    });
+const text = await (await fetch('/config/settings.toml')).text();
+const config = TOML.parse(text);
+console.log(config);
 ```
 
 Run dumper,
 
 ```js
-    var toml = require('toml-js');
-    var stringData = toml.dump({owner: {name: "Tom Preston-Werner", organization: "GitHub"}});
+const stringData = TOML.stringify({owner: {name: "Tom Preston-Werner", organization: "GitHub"}});
 ```
 
 ## Contributing
 
-You are very welcome. Please fork, update [tests](/test/spec/toml.spec.js), apply fix, build and submit the pull request.
+You are very welcome. Please fork, update [test](/test/), apply fix, build and submit the pull request.
 
 ## Supported version
 
@@ -81,9 +60,12 @@ Support provided for [v0.1.0](https://github.com/mojombo/toml/blob/master/versio
 
 ## Credits
 
+* @alexbeletsky - [toml-js](https://github.com/alexbeletsky/toml-js) for base code.
 * @rossipedia - [toml-net](https://github.com/rossipedia/toml-net) for well-rounded test suite.
 
 # Licence (MIT License)
+
+Copyright (c) 2021 Taisuke Fukuno
 
 Copyright (c) 2013 Alexander Beletsky
 

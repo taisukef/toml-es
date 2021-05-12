@@ -1,3 +1,8 @@
+// TOML parser implementation, v0.0.8
+// Copyright (c)2013 alexander.beletsky@gmail.com
+// Distributed under MIT license
+// https://github.com/alexbeletsky/toml-js
+
 var toml = (function () {
 
     var parseGroup = function (context, str) {
@@ -107,15 +112,13 @@ var toml = (function () {
         }
 
         function parsePrimitive(value) {
-            if (date(value)) {
-                return new Date(value);
+            if (value.indexOf("-") !== -1 && value.indexOf("'") === -1 && value.indexOf('"') === -1 && value.indexOf("{") === -1 && value.indexOf("[") === -1) {
+                const date = new Date(value);
+                if (date) {
+                    return date;
+                }
             }
-
             return eval(value);
-
-            function date(value) {
-                return (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z/).test(value);
-            }
         }
     };
 
@@ -236,7 +239,7 @@ var toml = (function () {
             }
             var bracket = '[';
             for (var index = 0; index < value.length; ++index) {
-               bracket += dump(value[index]) + ', ';
+                bracket += dump(value[index]) + ', ';
             }
             return bracket.substring(0, bracket.length - 2) + ']';
         }
@@ -252,8 +255,8 @@ var toml = (function () {
 
         if(simleProps){
             if(context.length > 0){
-               var contextName = context.join('.');
-               result += '[' + contextName + ']\n';
+                var contextName = context.join('.');
+                result += '[' + contextName + ']\n';
             }
             result += simleProps + '\n';
         }
@@ -286,3 +289,32 @@ var toml = (function () {
     };
 
 })();
+  
+// extends by @taisukef
+const array2object = (a) => {
+    if (!Array.isArray(a)) {
+        return a;
+    }
+    const o = {};
+    for (let i = 0; i < a.length; i++) {
+        o[i] = a[i];
+    }
+    return o;
+};
+const object2array = (o) => {
+    for (const n in o) {
+        if (parseInt(n) != n) {
+            return o;
+        }
+    }
+    const a = [];
+    for (const n in o) {
+        a[n] = o[n];
+    }
+    return a;
+};
+
+const TOML = {};
+TOML.stringify = (o) => toml.dump(array2object(o));
+TOML.parse = (a) => object2array(toml.parse(a));
+export { TOML };
