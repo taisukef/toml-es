@@ -1,12 +1,13 @@
-# Toml-es
+# toml-es
 
-Very slim, very fast, no dependencies, [TOML](https://github.com/mojombo/toml)
-parser implementation. Works both browser and Deno.\
-forked from [toml-js](https://github.com/alexbeletsky/toml-js)
+Very slim, very fast, no dependencies, [TOML](https://toml.io/)
+parser implementation. Works both browser and Deno.  
+小さく速く依存なしの[TOML](https://toml.io/)実装、ブラウザとDenoで動くESモジュールです。  
+forked from [toml-js](https://github.com/alexbeletsky/toml-js)  
 
 ## Why?
 
-[TOML](https://github.com/mojombo/toml) is a very convenient, INI-like storage
+[TOML](https://toml.io/) is a very convenient, INI-like storage
 file format, suitable for many types of applications and utilities.
 
 ## Running on browser
@@ -35,7 +36,7 @@ const stringData = TOML.stringify({
 
 ## Running on Deno
 
-```
+```js
 import { TOML } from "https://taisukef.github.io/toml-es/TOML.js";
 ```
 
@@ -55,16 +56,22 @@ const stringData = TOML.stringify({
 });
 ```
 
+## Todo
+
+* [Issues](https://github.com/alexbeletsky/toml-js/issues)
+* Support [TOML v1.0.0](https://toml.io/en/v1.0.0)
+
 ## Contributing
 
-You are very welcome. Please fork, update [test](/test/), apply fix, build and
-submit the pull request.
+You are very welcome.  
+Please comment on [Issues](https://github.com/taisukef/toml-es/issues).  
+Please fork, update [test](/test/), apply fix, build and submit the pull request.  
 
 ## Supported version
 
 Support provided for
 [v0.1.0](https://github.com/mojombo/toml/blob/master/versions/toml-v0.1.0.md)
-version of TOML (latest up to 25 Feb 2013).
+version of [TOML](https://toml.io/) (latest up to 25 Feb 2013).
 
 ## Credits
 
