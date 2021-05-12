@@ -1,8 +1,9 @@
 # toml-es
 
 Very slim, very fast, no dependencies, [TOML](https://github.com/mojombo/toml)
-parser implementation. Works both browser and Deno.\
-forked from [toml-js](https://github.com/alexbeletsky/toml-js)
+parser implementation. Works both browser and Deno.  
+小さく速く依存なしの[TOML](https://github.com/mojombo/toml)実装、ブラウザとDenoで動くESモジュールです。  
+forked from [toml-js](https://github.com/alexbeletsky/toml-js)  
 
 ## Why?
 
