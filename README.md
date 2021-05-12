@@ -1,13 +1,13 @@
 # toml-es
 
-Very slim, very fast, no dependencies, [TOML](https://github.com/mojombo/toml)
+Very slim, very fast, no dependencies, [TOML](https://toml.io/)
 parser implementation. Works both browser and Deno.  
-小さく速く依存なしの[TOML](https://github.com/mojombo/toml)実装、ブラウザとDenoで動くESモジュールです。  
+小さく速く依存なしの[TOML](https://toml.io/)実装、ブラウザとDenoで動くESモジュールです。  
 forked from [toml-js](https://github.com/alexbeletsky/toml-js)  
 
 ## Why?
 
-[TOML](https://github.com/mojombo/toml) is a very convenient, INI-like storage
+[TOML](https://toml.io/) is a very convenient, INI-like storage
 file format, suitable for many types of applications and utilities.
 
 ## Running on browser
@@ -71,7 +71,7 @@ Please fork, update [test](/test/), apply fix, build and submit the pull request
 
 Support provided for
 [v0.1.0](https://github.com/mojombo/toml/blob/master/versions/toml-v0.1.0.md)
-version of TOML (latest up to 25 Feb 2013).
+version of [TOML](https://toml.io/) (latest up to 25 Feb 2013).
 
 ## Credits
 
