@@ -1,7 +1,7 @@
 # toml-es
 
 Very slim, very fast, few dependencies, [TOML](https://toml.io/) parser
-implementation. Works both browser and Deno.\
+and stringify implementation. Works both browser and Deno.\
 小さく速く依存が少ないの[TOML](https://toml.io/)実装、ブラウザとDenoで動くESモジュールです。\
 forked from [toml-js](https://github.com/alexbeletsky/toml-js)\
 use [LongTengDao/j-toml](https://github.com/LongTengDao/j-toml) for TOML.parse
