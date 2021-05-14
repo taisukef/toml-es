@@ -58,11 +58,6 @@ const stringData = TOML.stringify({
 });
 ```
 
-## Todo
-
-- [Issues](https://github.com/alexbeletsky/toml-js/issues)
-- Support [TOML v1.0.0](https://toml.io/en/v1.0.0)
-
 ## Contributing
 
 You are very welcome.\
@@ -72,9 +67,7 @@ request.
 
 ## Supported version
 
-Support provided for
-[v0.1.0](https://github.com/mojombo/toml/blob/master/versions/toml-v0.1.0.md)
-version of [TOML](https://toml.io/) (latest up to 25 Feb 2013).
+Support provided for [v1.0.0](https://toml.io/en/v1.0.0)
 
 ## Credits
 
@@ -82,6 +75,7 @@ version of [TOML](https://toml.io/) (latest up to 25 Feb 2013).
   code.
 - @rossipedia - [toml-net](https://github.com/rossipedia/toml-net) for
   well-rounded test suite.
+- @LongTengDao - [j-toml](https://github.com/LongTengDao/j-toml) for parse
 
 # Licence (MIT License)
 
