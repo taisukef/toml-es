@@ -71,11 +71,10 @@ Support provided for [v1.0.0](https://toml.io/en/v1.0.0)
 
 ## Credits
 
-- @alexbeletsky - [toml-js](https://github.com/alexbeletsky/toml-js) for base
-  code.
+- @alexbeletsky - [toml-js](https://github.com/alexbeletsky/toml-js) for stringify.
 - @rossipedia - [toml-net](https://github.com/rossipedia/toml-net) for
   well-rounded test suite.
-- @LongTengDao - [j-toml](https://github.com/LongTengDao/j-toml) for parse
+- @LongTengDao - [j-toml](https://github.com/LongTengDao/j-toml) for parse.
 
 # Licence (MIT License)
 
