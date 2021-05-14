@@ -1,14 +1,16 @@
 # toml-es
 
-Very slim, very fast, no dependencies, [TOML](https://toml.io/)
-parser implementation. Works both browser and Deno.  
-小さく速く依存なしの[TOML](https://toml.io/)実装、ブラウザとDenoで動くESモジュールです。  
-forked from [toml-js](https://github.com/alexbeletsky/toml-js)  
+Very slim, very fast, few dependencies, [TOML](https://toml.io/) parser
+implementation. Works both browser and Deno.\
+小さく速く依存が少ないの[TOML](https://toml.io/)実装、ブラウザとDenoで動くESモジュールです。\
+forked from [toml-js](https://github.com/alexbeletsky/toml-js)\
+use [LongTengDao/j-toml](https://github.com/LongTengDao/j-toml) for TOML.parse
+1.0.0
 
 ## Why?
 
-[TOML](https://toml.io/) is a very convenient, INI-like storage
-file format, suitable for many types of applications and utilities.
+[TOML](https://toml.io/) is a very convenient, INI-like storage file format,
+suitable for many types of applications and utilities.
 
 ## Running on browser
 
@@ -58,14 +60,15 @@ const stringData = TOML.stringify({
 
 ## Todo
 
-* [Issues](https://github.com/alexbeletsky/toml-js/issues)
-* Support [TOML v1.0.0](https://toml.io/en/v1.0.0)
+- [Issues](https://github.com/alexbeletsky/toml-js/issues)
+- Support [TOML v1.0.0](https://toml.io/en/v1.0.0)
 
 ## Contributing
 
-You are very welcome.  
-Please comment on [Issues](https://github.com/taisukef/toml-es/issues).  
-Please fork, update [test](/test/), apply fix, build and submit the pull request.  
+You are very welcome.\
+Please comment on [Issues](https://github.com/taisukef/toml-es/issues).\
+Please fork, update [test](/test/), apply fix, build and submit the pull
+request.
 
 ## Supported version
 

@@ -1,300 +1,83 @@
+import { parse } from "https://taisukef.github.io/j-toml/dist/ESM/j-toml.min.js";
+
 // TOML parser implementation, v0.0.8
 // Copyright (c)2013 alexander.beletsky@gmail.com
 // Distributed under MIT license
 // https://github.com/alexbeletsky/toml-js
 
-var toml = (function () {
-  var parseGroup = function (context, str) {
-    var result = context.result;
-    var group = parseGroupName(str);
-    if (group.indexOf(".") !== -1) {
-      var groups = parseSubGroups(group);
-      addGroups(result, groups);
-    } else {
-      addGroup(result, group);
+const escapeString = (str) => {
+  return str
+    .replace(/\\b/g, "\\b")
+    .replace(/\\t/g, "\\t")
+    .replace(/\\n/g, "\\n")
+    .replace(/\\f/g, "\\f")
+    .replace(/\\r/g, "\\r")
+    .replace(/"/g, '\\"');
+};
+
+const isSimpleType = (value) => {
+  const type = typeof value;
+  const strType = Object.prototype.toString.call(value);
+  return type === "string" || type === "number" || type === "bigint" ||
+    type === "boolean" ||
+    strType === "[object Date]" || strType === "[object Array]";
+};
+
+const dumpObject = (value, context) => {
+  context = context || [];
+  const type = Object.prototype.toString.call(value);
+  if (type === "[object Date]") {
+    return value.toISOString();
+  } else if (type === "[object Array]") {
+    if (value.length === 0) {
+      return null;
     }
-
-    function parseGroupName(str) {
-      var start = str.indexOf("["), end = str.indexOf("]");
-      return str.substring(start + 1, end);
+    const bracket = "[";
+    for (const index = 0; index < value.length; ++index) {
+      bracket += dump(value[index]) + ", ";
     }
+    return bracket.substring(0, bracket.length - 2) + "]";
+  }
 
-    function parseSubGroups(str) {
-      return str.split(".");
+  let result = "";
+  let simleProps = "";
+
+  for (const propertyName in value) {
+    if (isSimpleType(value[propertyName])) {
+      simleProps += propertyName + " = " + dump(value[propertyName]) + "\n";
     }
+  }
 
-    function addGroup(result, group) {
-      if (result[group]) {
-        throw new Error('"' + group + '" is overriding existing value');
-      }
-
-      var current = result[group] = {};
-      context.currentGroup = current;
+  if (simleProps) {
+    if (context.length > 0) {
+      const contextName = context.join(".");
+      result += "[" + contextName + "]\n";
     }
+    result += simleProps + "\n";
+  }
 
-    function addGroups(result, groups) {
-      groups.reduce(function (prev, current) {
-        if (!result[prev]) {
-          addGroup(result, prev);
-        }
-        addGroup(result[prev], current);
-        return current;
-      });
+  for (const propertyName in value) {
+    if (!isSimpleType(value[propertyName])) {
+      result += dump(value[propertyName], context.concat(propertyName));
     }
-  };
+  }
 
-  var parseExpression = function (context, line) {
-    var pair = parseNameValue(line);
-    var value = parseValue(pair.value);
-    var currentGroup = context.currentGroup || context.result;
+  return result;
+};
 
-    currentGroup[pair.name] = value;
-
-    function parseNameValue(line) {
-      var equal = line.indexOf("=");
-      return {
-        name: line.substring(0, equal),
-        value: line.substring(equal + 1),
-      };
-    }
-
-    function parseValue(value) {
-      if (array(value)) {
-        return parseArray(value);
-      }
-
-      return parsePrimitive(value);
-
-      function array(value) {
-        return value.charAt(0) === "[" &&
-          value.charAt(value.length - 1) === "]";
-      }
-    }
-
-    function parseArray(value) {
-      var values = parseArrayValues(value);
-      return values.map(function (v) {
-        return parseValue(v);
-      });
-
-      function parseArrayValues(value) {
-        var parsed = [];
-        var array = value.substring(1, value.length - 1);
-        var map = commasMap(array);
-        map.reduce(function (prev, next) {
-          parsed.push(array.substring(prev + 1, next));
-          return next;
-        }, -1);
-
-        return parsed;
-
-        function commasMap(value) {
-          var map = [];
-          var inArray = false, depth = 0;
-          for (var index = 0; index < value.length; index++) {
-            var element = value[index];
-            if (element === "[") {
-              depth++;
-            } else if (element === "]") {
-              depth--;
-            }
-
-            if (element === "," && depth === 0) {
-              map.push(index);
-            }
-          }
-
-          map.push(value.length);
-
-          return map;
-        }
-      }
-    }
-
-    function parsePrimitive(value) {
-      if (
-        value.indexOf("-") !== -1 && value.indexOf("'") === -1 &&
-        value.indexOf('"') === -1 && value.indexOf("{") === -1 &&
-        value.indexOf("[") === -1
-      ) {
-        const date = new Date(value);
-        if (date) {
-          return date;
-        }
-      }
-      return eval(value);
-    }
-  };
-
-  var parseLine = function (context, line) {
-    if (group(line)) {
-      parseGroup(context, line);
-    } else if (expression(line)) {
-      parseExpression(context, line);
-    } else if (empty(line)) {
-      resetContext();
-    }
-
-    function group(line) {
-      return line.charAt(0) === "[";
-    }
-
-    function expression(line) {
-      return line.indexOf("=") > 0;
-    }
-
-    function empty(line) {
-      return line === "";
-    }
-
-    function resetContext() {
-      delete context.currentGroup;
-    }
-  };
-
-  var parse = function (context, lines) {
-    mergeMultilines(lines).forEach(function (line) {
-      line = stripComments(replaceWhitespaces(line));
-      parseLine(context, line);
-    });
-
-    function replaceWhitespaces(line) {
-      return line.replace(/\s/g, "");
-    }
-
-    function stripComments(line) {
-      return line.split("#")[0];
-    }
-
-    function mergeMultilines(lines) {
-      var merged = [], acc = [], capture = false, merge = false;
-      lines.forEach(function (line) {
-        if (multilineArrayStart(line)) {
-          capture = true;
-        }
-
-        if (capture && multilineArrayEnd(line)) {
-          merge = true;
-        }
-
-        if (capture) {
-          acc.push(line);
-        } else {
-          merged.push(line);
-        }
-
-        if (merge) {
-          capture = false;
-          merge = false;
-          merged.push(acc.join(""));
-          acc = [];
-        }
-      });
-
-      return merged;
-
-      function multilineArrayStart(line) {
-        return line.indexOf("[") !== -1 && line.indexOf("]") === -1;
-      }
-
-      function multilineArrayEnd(line) {
-        return line.indexOf("]") !== -1;
-      }
-    }
-  };
-
-  var startParser = function (str) {
-    var context = {};
-    context.result = {};
-    var lines = str.toString().split("\n");
-
-    parse(context, lines);
-
-    return context.result;
-  };
-
-  String.prototype.replaceAll = function (find, replace) {
-    var str = this;
-    return str.replace(new RegExp(find, "g"), replace);
-  };
-
-  var escapeString = function (str) {
-    return str
-      .replaceAll("\b", "\\b")
-      .replaceAll("\t", "\\t")
-      .replaceAll("\n", "\\n")
-      .replaceAll("\f", "\\f")
-      .replaceAll("\r", "\\r")
-      .replaceAll('"', '\\"');
-  };
-
-  var isSimpleType = function (value) {
-    var type = typeof value;
-    var strType = Object.prototype.toString.call(value);
-    return type === "string" || type === "number" || type === "boolean" ||
-      strType === "[object Date]" || strType === "[object Array]";
-  };
-
-  var dumpObject = function (value, context) {
-    context = context || [];
-    var type = Object.prototype.toString.call(value);
-    if (type === "[object Date]") {
-      return value.toISOString();
-    } else if (type === "[object Array]") {
-      if (value.length === 0) {
-        return null;
-      }
-      var bracket = "[";
-      for (var index = 0; index < value.length; ++index) {
-        bracket += dump(value[index]) + ", ";
-      }
-      return bracket.substring(0, bracket.length - 2) + "]";
-    }
-
-    var result = "", simleProps = "";
-    var propertyName;
-
-    for (propertyName in value) {
-      if (isSimpleType(value[propertyName])) {
-        simleProps += propertyName + " = " + dump(value[propertyName]) + "\n";
-      }
-    }
-
-    if (simleProps) {
-      if (context.length > 0) {
-        var contextName = context.join(".");
-        result += "[" + contextName + "]\n";
-      }
-      result += simleProps + "\n";
-    }
-
-    for (propertyName in value) {
-      if (!isSimpleType(value[propertyName])) {
-        result += dump(value[propertyName], context.concat(propertyName));
-      }
-    }
-
-    return result;
-  };
-
-  var dump = function (value, context) {
-    switch (typeof value) {
-      case "string":
-        return '"' + escapeString(value) + '"';
-      case "number":
-        return "" + value;
-      case "boolean":
-        return value ? "true" : "false";
-      case "object":
-        return dumpObject(value, context);
-    }
-  };
-
-  return {
-    parse: startParser,
-    dump: dump,
-  };
-})();
+const dump = (value, context) => {
+  switch (typeof value) {
+    case "string":
+      return '"' + escapeString(value) + '"';
+    case "number":
+    case "bigint":
+      return "" + value;
+    case "boolean":
+      return value ? "true" : "false";
+    case "object":
+      return dumpObject(value, context);
+  }
+};
 
 // extends by @taisukef
 const array2object = (a) => {
@@ -321,6 +104,9 @@ const object2array = (o) => {
 };
 
 const TOML = {};
-TOML.stringify = (o) => toml.dump(array2object(o));
-TOML.parse = (a) => object2array(toml.parse(a));
+TOML.stringify = (o) => dump(array2object(o));
+//TOML.parse = (a) => object2array(toml.parse(a));
+//TOML.parse = (a) => parse(a, 1.0, "\n");
+TOML.parse = (a) => object2array(parse(a, 1.0, "\n"));
+
 export { TOML };
